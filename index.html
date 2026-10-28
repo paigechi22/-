@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>觀議課宣傳素材蒐集｜互動版</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--tx:#1d2733;--mu:#667585;--ac:#1f6fb2;--ac2:#e3effa;--bd:#d5dde6;--wn:#fff6dd;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181d;--card:#1c2229;--tx:#e6ebf0;--mu:#97a4b1;--ac:#6cb2ee;--ac2:#22313f;--bd:#33404c;--wn:#2d2814;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14181d;--card:#1c2229;--tx:#e6ebf0;--mu:#97a4b1;--ac:#6cb2ee;--ac2:#22313f;--bd:#33404c;--wn:#2d2814;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.7 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+header{padding:18px 16px 8px;max-width:900px;margin:0 auto}
+h1{font-size:21px;margin:0}
+.sub{color:var(--mu);font-size:13px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--card);border-bottom:1px solid var(--bd);overflow-x:auto;white-space:nowrap;padding:6px 10px}
+nav button{border:0;background:none;color:var(--mu);padding:7px 12px;border-radius:18px;font:inherit;font-size:14px;cursor:pointer}
+nav button.on{background:var(--ac);color:#fff}
+nav button.has::after{content:"●";font-size:8px;margin-left:4px;color:var(--ac)}
+nav button.on.has::after{color:#fff}
+main{max-width:900px;margin:0 auto;padding:14px 14px 60px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+h2{font-size:18px;margin:0 0 10px;color:var(--ac)}
+.tag{font-size:12px;background:var(--ac2);color:var(--ac);padding:1px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+label.f{display:block;margin:10px 0 3px;font-weight:600;font-size:14px}
+input[type=text],input[type=date],textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px 10px}
+textarea{min-height:70px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--ac);border-color:transparent}
+.chk{display:inline-block;margin:4px 14px 4px 0;cursor:pointer}
+.chk input{margin-right:5px;transform:scale(1.15)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{border:1px solid var(--bd);padding:4px;vertical-align:top;text-align:left;font-size:14px}
+th{background:var(--ac2);color:var(--ac);padding:6px}
+td input,td textarea{border:0;background:transparent;min-height:0;padding:4px;height:auto}
+td textarea{min-height:56px}
+.row{display:flex;gap:6px;margin:4px 0}
+.row input{flex:1}
+.b{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.b.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+.b.x{color:#c0392b;padding:4px 9px}
+.hint{background:var(--wn);border-radius:8px;padding:8px 12px;font-size:13px;margin:8px 0}
+.g td,.g th{padding:6px 9px}
+.g td{font-size:14px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+#draft{min-height:420px;line-height:1.85}
+.foot{display:flex;justify-content:space-between;margin-top:6px}
+.sv{color:var(--mu);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>觀議課宣傳素材蒐集 <span class="tag">互動版</span></h1>
+<div class="sub">現場邊看邊記，內容自動儲存在此瀏覽器；記完可一鍵產生貼文草稿。<span class="sv" id="sv"></span></div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+
+<script>
+const SEC=[
+{id:'A',t:'A 基本資訊',tag:'→ ②',f:[
+ {k:'date',l:'日期（填西元，發文時轉民國年）',y:'date'},
+ {k:'org',l:'主辦／合辦單位',y:'text'},
+ {k:'course',l:'課程名稱（中／英）',y:'text'},
+ {k:'lect',l:'授課講師（系所＋職稱）',y:'text'},
+ {k:'guest',l:'致詞貴賓（姓名＋系所＋職稱）',y:'text'},
+ {k:'panel',l:'議課對談者（姓名＋系所＋職稱）',y:'text'},
+ {k:'obs',l:'觀課教師（姓名＋系所＋職稱）',y:'text'},
+ {k:'stu',l:'學生概況（人數、年級、是否有外籍生）',y:'text'},
+ {k:'ok',l:'',y:'chk',o:['人名與職稱已核對']}]},
+{id:'B',t:'B 說課',tag:'→ ③',f:[
+ {k:'topic',l:'課程主題與本堂課在整體課程的位置',y:'area'},
+ {k:'goal',l:'學習目標（條列，盡量記原話）',y:'list'},
+ {k:'concept',l:'關鍵概念／定義（如 Animism、FCF）',y:'area'},
+ {k:'design',l:'講師的設計理念或特色做法',y:'area'},
+ {k:'quote',l:'講師金句（記原話）',y:'area'}]},
+{id:'C',t:'C 觀課',tag:'→ ④',f:[
+ {k:'flow',l:'1. 課程流程',y:'table',c:['時間','環節','引導問題／任務（原話）','教學策略／工具','講師行為','學生反應']},
+ {k:'strat',l:'2. 策略名稱（Think–Pair–Share、小組討論、Kahoot、案例分析…）',y:'area'},
+ {k:'tool',l:'數位工具（Kahoot、Google Sheet、Google Form…）',y:'area'},
+ {k:'lang',l:'語言支援做法（關鍵字彙、句型、結構化提示）',y:'area'},
+ {k:'fb',l:'即時回饋方式（巡迴、發表後講評…）',y:'area'},
+ {k:'out',l:'3. 學生產出與成果（口頭報告、書面報告、作品、測驗）',y:'area'},
+ {k:'care',l:'4. 講師對學生的細膩關注（如記得學生國籍、邀請分享文化觀點）',y:'area'},
+ {k:'atmo',l:'課堂氛圍、教材與環境',y:'area'},
+ {k:'moment',l:'意外的精彩時刻',y:'area'}]},
+{id:'D',t:'D 議課',tag:'→ ⑤',f:[
+ {k:'pos',l:'肯定（至少 3 點，附具體事例）',y:'list',n:3},
+ {k:'sug',l:'建議（記具體可執行做法）',y:'list',n:2},
+ {k:'resp',l:'講師的回應或個人觀點（含原話）',y:'area'},
+ {k:'topic2',l:'其他討論議題（如 AI 使用、評量方式）',y:'area'},
+ {k:'act',l:'後續行動',y:'area'}]},
+{id:'E',t:'E 詞彙',tag:'',f:[
+ {k:'gl',l:'中英對照專有詞彙',y:'table',c:['中文','English','出現情境'],n:3}]},
+{id:'F',t:'F 疑惑與建議',tag:'',f:[
+ {k:'q',l:'當週老師的疑惑',y:'area'},
+ {k:'s',l:'當週老師的建議',y:'area'},
+ {k:'todo',l:'需跟進事項／負責人',y:'area'}]},
+{id:'G',t:'G 發文整理',tag:'→ ① ⑥',f:[
+ {k:'ti',l:'標題候選（講師＋動詞＋特色）',y:'list',n:2},
+ {k:'hl',l:'一句話亮點',y:'text'},
+ {k:'ang',l:'結語切角（可複選）',y:'chk',o:['EMI 教學實踐','跨校合作','教師專業成長','中心推動成果','學生學習成效']},
+ {k:'media',l:'照片／影片素材（時間點與內容）',y:'area'},
+ {k:'auth',l:'授權確認',y:'chk',o:['講師同意','學生肖像／發言同意','貴賓姓名職稱已核對']}]}
+];
+const TABS=[{id:'guide',t:'架構分析'},...SEC.map(s=>({id:s.id,t:s.t})),{id:'draft',t:'貼文草稿'}];
+let st={v:{},l:{},t:{}},cur='guide';
+try{const r=localStorage.getItem('gyk_v1');if(r)st=Object.assign(st,JSON.parse(r))}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let tm;function save(){clearTimeout(tm);tm=setTimeout(()=>{try{localStorage.setItem('gyk_v1',JSON.stringify(st));$('#sv').textContent='　已自動儲存'}catch(e){$('#sv').textContent='　（此環境無法儲存）'}marks()},300)}
+function has(id){const p=id+'.';return Object.keys(st.v).some(k=>k.startsWith(p)&&st.v[k])||Object.keys(st.l).some(k=>k.startsWith(p)&&st.l[k].some(x=>x))||Object.keys(st.t).some(k=>k.startsWith(p)&&st.t[k].some(r=>r.some(x=>x)))}
+function nav(){$('#nav').innerHTML=TABS.map(t=>`<button data-tab="${t.id}" class="${t.id===cur?'on':''}">${t.t}</button>`).join('');marks()}
+function marks(){document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('has',b.dataset.tab.length===1&&has(b.dataset.tab)))}
+function guide(){return `<div class="card"><h2>兩篇發文的架構</h2><div class="hint">以兩篇範例貼文（越南文化、財務管理）拆解出 6 個段落，下方 A～G 欄位標註了對應段落。</div>
+<div class="tw"><table class="g"><tr><th>段落</th><th>功能</th><th>範例中的具體內容</th></tr>
+<tr><td>① 標題</td><td>一句話點出亮點</td><td>跨校公開觀議課＋講師姓名職稱＋動詞＋教學特色</td></tr>
+<tr><td>② 活動資訊</td><td>who / when / where</td><td>日期（民國年）、主辦合辦單位、講師、致詞貴賓、議課對談者、觀課教師（含系所職稱）</td></tr>
+<tr><td>③ 課程與說課</td><td>what / why</td><td>課程名稱、主題、三階段、學習目標與關鍵概念</td></tr>
+<tr><td>④ 觀課</td><td>最長，依時序帶出流程</td><td>開場引導問題、教學策略名稱、講師行為、學生產出</td></tr>
+<tr><td>⑤ 議課</td><td>肯定、建議與講師反思</td><td>具體肯定、可執行建議、講師個人觀點（如 AI「輔助使用，而非依賴」）</td></tr>
+<tr><td>⑥ 結語</td><td>升華到中心與社群價值</td><td>EMI 教學實踐、中心推動成果、跨校合作、教師專業成長</td></tr></table></div>
+<h2 style="margin-top:16px">寫作特徵</h2><ol><li>議課一定有「肯定＋建議」，建議是可操作的具體做法。</li><li>觀課依「引導問題→活動→回饋→成果」展開，現場要記原話與步驟。</li><li>會點名教學策略與工具（Think–Pair–Share、Kahoot、Google Sheet）。</li><li>講師的個人觀點或教學理念是加分素材。</li><li>人名、系所、職稱最容易出錯，要現場核對。</li></ol>
+<div class="hint"><b>使用小提醒：</b>C 邊看邊記、D 在議課時記；A、B、E、F 可課前或事後補；G 建議當天填完。引導問題、金句、建議請記原話。</div></div>`}
+function field(sid,f){const k=sid+'.'+f.k,lab=f.l?`<label class="f">${f.l}</label>`:'';
+ if(f.y==='text'||f.y==='date')return lab+`<input type="${f.y}" data-k="${k}" value="${esc(st.v[k])}">`;
+ if(f.y==='area')return lab+`<textarea data-k="${k}">${esc(st.v[k])}</textarea>`;
+ if(f.y==='chk')return lab+f.o.map((o,i)=>`<label class="chk"><input type="checkbox" data-k="${k}.${i}" ${st.v[k+'.'+i]?'checked':''}>${o}</label>`).join('');
+ if(f.y==='list'){const a=st.l[k]||(st.l[k]=Array(f.n||1).fill(''));return lab+a.map((x,i)=>`<div class="row"><input type="text" data-l="${k}" data-i="${i}" value="${esc(x)}" placeholder="${i+1}."><button class="b x" data-del="l|${k}|${i}">✕</button></div>`).join('')+`<button class="b" data-add="l|${k}">＋ 新增一項</button>`}
+ if(f.y==='table'){const a=st.t[k]||(st.t[k]=Array.from({length:f.n||3},()=>f.c.map(()=>'')));
+  return lab+`<div class="tw"><table><tr>${f.c.map(c=>`<th>${c}</th>`).join('')}<th style="width:36px"></th></tr>`+a.map((r,i)=>`<tr>${r.map((x,j)=>`<td><textarea data-t="${k}" data-i="${i}" data-j="${j}">${esc(x)}</textarea></td>`).join('')}<td><button class="b x" data-del="t|${k}|${i}">✕</button></td></tr>`).join('')+`</table></div><button class="b" data-add="t|${k}|${f.c.length}">＋ 新增一列</button>`}}
+function view(){const m=$('#main');
+ if(cur==='guide')m.innerHTML=guide();
+ else if(cur==='draft'){m.innerHTML=`<div class="card"><h2>貼文草稿</h2><div class="hint">依 ①～⑥ 段落結構，自動帶入你填寫的內容。空白處會顯示【待補】，可直接在下方修改。</div><div class="bar"><button class="b p" id="gen">重新產生</button><button class="b" id="cp">複製全文</button><button class="b" id="rs">清除所有紀錄</button></div><textarea id="draft"></textarea><div class="sv" id="cs"></div></div>`;$('#draft').value=draft()}
+ else{const s=SEC.find(x=>x.id===cur);m.innerHTML=`<div class="card"><h2>${s.t}${s.tag?`<span class="tag">${s.tag}</span>`:''}</h2>${s.f.map(f=>field(s.id,f)).join('')}</div>`}
+ nav();scrollTo(0,0)}
+const V=k=>(st.v[k]||'').trim(),L=k=>(st.l[k]||[]).map(x=>x.trim()).filter(Boolean);
+const need=(k,l)=>V(k)||`【待補：${l}】`;
+function roc(d){if(!d)return'【待補：日期】';const[y,m,dd]=d.split('-').map(Number);return`${y-1911} 年 ${m} 月 ${dd} 日`}
+function draft(){
+ const ti=L('G.ti')[0]||`「跨校公開觀議課」${V('A.lect')||'【待補：講師】'}展現【待補：教學特色】`;
+ const p=[ti,''];
+ p.push(`${roc(V('A.date'))}，${need('A.org','主辦單位')}舉辦跨校公開觀議課，本次由${need('A.lect','講師')}主講。`+(V('A.guest')?`活動邀請${V('A.guest')}蒞臨致詞，`:'')+(V('A.panel')?`${V('A.panel')}參與議課對談，`:'')+(V('A.obs')?`${V('A.obs')}擔任觀課教師。`:''));
+ const g=L('B.goal');
+ p.push(`本堂課程名稱為「${need('A.course','課程名稱')}」，活動分為課前說課、課堂觀察與課後議課三個階段。`+(V('B.topic')?V('B.topic')+'。':'')+`講師在說課階段說明學習目標：${g.length?g.join('；'):'【待補：學習目標】'}。`+(V('B.concept')?`重點概念包括${V('B.concept')}。`:'')+(V('B.quote')?`講師表示：「${V('B.quote')}」`:''));
+ const rows=(st.t['C.flow']||[]).filter(r=>r.some(x=>x.trim()));
+ let c=rows.map((r,i)=>{const[ti2,ph,q,s,a,re]=r.map(x=>x.trim());return`${i===0?'課程':'接著'}${ph?'的「'+ph+'」環節':''}${q?'以「'+q+'」展開':''}${s?'，運用'+s:''}${a?'，講師'+a:''}${re?'，學生'+re:''}。`}).join('');
+ p.push(c||'【待補：觀課流程】');
+ if(V('C.lang'))p.push(`在語言支援方面，${V('C.lang')}。`);
+ if(V('C.fb'))p.push(`回饋方式：${V('C.fb')}。`);
+ if(V('C.out'))p.push(`學生成果：${V('C.out')}。`);
+ if(V('C.care'))p.push(`${V('C.care')}，顯示講師對學生差異的細膩關注。`);
+ const pos=L('D.pos'),sg=L('D.sug');
+ p.push(`課後議課環節中，與談者給予肯定：${pos.length?pos.join('；'):'【待補：肯定】'}。建議部分包括：${sg.length?sg.join('；'):'【待補：建議】'}。`+(V('D.resp')?`講師也分享：${V('D.resp')}`:''));
+ const m={0:'展現 EMI 教學實踐的具體成果',1:'體現跨校合作的成效',2:'促進教師在專業內容與英語教學策略上的雙向成長',3:'彰顯中心持續推動英語授課課程的成果',4:'讓學生在英語學習中獲得具體成長'};
+ const a=Object.keys(m).filter(i=>st.v['G.ang.'+i]).map(i=>m[i]);
+ p.push(`整體而言，${V('G.hl')?V('G.hl')+'。':''}此次觀議課${a.length?a.join('，並'):'【待補：結語切角】'}。`);
+ return p.join('\n\n')}
+document.addEventListener('click',e=>{const t=e.target;
+ if(t.dataset.tab){cur=t.dataset.tab;view();return}
+ if(t.dataset.add){const[ty,k,n]=t.dataset.add.split('|');if(ty==='l')st.l[k].push('');else st.t[k].push(Array(+n).fill(''));save();view();return}
+ if(t.dataset.del){const[ty,k,i]=t.dataset.del.split('|');const a=ty==='l'?st.l[k]:st.t[k];if(a.length>1)a.splice(+i,1);else a[0]=ty==='l'?'':a[0].map(()=>'');save();view();return}
+ if(t.id==='gen'){$('#draft').value=draft();return}
+ if(t.id==='cp'){const d=$('#draft');d.select();let ok=false;try{ok=document.execCommand('copy')}catch(x){}
+  if(!ok&&navigator.clipboard)navigator.clipboard.writeText(d.value).then(()=>{$('#cs').textContent='已複製'},()=>{});
+  $('#cs').textContent=ok?'已複製':'請按 Ctrl/⌘+C 複製已選取的文字';return}
+ if(t.id==='rs'){if(t.dataset.sure){st={v:{},l:{},t:{}};save();view()}else{t.dataset.sure=1;t.textContent='再按一次確認清除'}}
+});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.k){st.v[t.dataset.k]=t.type==='checkbox'?t.checked:t.value}
+ else if(t.dataset.l){st.l[t.dataset.l][+t.dataset.i]=t.value}
+ else if(t.dataset.t){st.t[t.dataset.t][+t.dataset.i][+t.dataset.j]=t.value}
+ else return;save()});
+view();
+</script>
+</body>
+</html>
